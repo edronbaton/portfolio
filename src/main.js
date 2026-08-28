@@ -1,4 +1,6 @@
 const toggle = document.querySelector(".theme-toggle");
+const menuToggle = document.querySelector(".menu-toggle");
+const navigation = document.querySelector("#main-nav");
 const root = document.body;
 const savedTheme = localStorage.getItem("kriva-theme");
 
@@ -8,6 +10,21 @@ toggle.addEventListener("click", () => {
   root.classList.toggle("dark");
   localStorage.setItem("kriva-theme", root.classList.contains("dark") ? "dark" : "light");
 });
+
+const closeMenu = () => {
+  root.classList.remove("menu-open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Открыть меню");
+};
+
+menuToggle.addEventListener("click", () => {
+  const isOpen = root.classList.toggle("menu-open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.setAttribute("aria-label", isOpen ? "Закрыть меню" : "Открыть меню");
+});
+
+navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+document.addEventListener("keydown", (event) => event.key === "Escape" && closeMenu());
 
 const observer = new IntersectionObserver(
   (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("visible")),
