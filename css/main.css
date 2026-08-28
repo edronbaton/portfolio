@@ -484,42 +484,13 @@ section[id] {
 .cycle span {
   grid-area: 1 / 1;
   opacity: 0;
-  transform: translateY(40%);
-  animation: cycle 8s var(--ease-out) infinite;
+  transform: translateY(28%);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
 }
 
-.cycle span:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.cycle span:nth-child(2) {
-  animation-delay: 2s;
-}
-
-.cycle span:nth-child(3) {
-  animation-delay: 4s;
-}
-
-.cycle span:nth-child(4) {
-  animation-delay: 6s;
-}
-
-@keyframes cycle {
-  0%,
-  4% {
-    opacity: 0;
-    transform: translateY(40%);
-  }
-  8%,
-  22% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  26%,
-  100% {
-    opacity: 0;
-    transform: translateY(-30%);
-  }
+.cycle span.is-on {
+  opacity: 1;
+  transform: none;
 }
 
 @keyframes rise {
@@ -1288,10 +1259,12 @@ section[id] {
 
   .cycle span {
     opacity: 0;
+    transform: none;
+    transition: none;
   }
 
+  .cycle span.is-on,
   .cycle span:first-child {
     opacity: 1;
-    transform: none;
   }
 }

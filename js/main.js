@@ -108,6 +108,21 @@
     document.head.appendChild(script);
   }
 
+  const cycle = document.querySelector(".cycle");
+  if (cycle) {
+    const words = [...cycle.children];
+    let index = 0;
+    const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    words.forEach((word, i) => word.classList.toggle("is-on", i === 0));
+    if (!prefersReduce && words.length > 1) {
+      window.setInterval(() => {
+        words[index].classList.remove("is-on");
+        index = (index + 1) % words.length;
+        words[index].classList.add("is-on");
+      }, 2400);
+    }
+  }
+
   const form = document.querySelector(".form");
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -116,13 +131,11 @@
     const contact = String(data.get("contact") || "").trim();
     const message = String(data.get("message") || "").trim();
     const text = `Привет, Kriva. Это ${name}. Связь: ${contact}. ${message}`;
-    const github = `https://github.com/edronbaton`;
     form.classList.add("success");
     const note = form.querySelector(".form-note");
-    if (note) note.textContent = "Сообщение собрано. Откроется GitHub — можно написать напрямую.";
-    window.setTimeout(() => {
-      window.open(github, "_blank", "noopener");
-    }, 400);
+    if (note) {
+      note.textContent = "Текст скопирован. Напишите Kriva в GitHub — ссылка слева.";
+    }
     navigator.clipboard?.writeText(text).catch(() => {});
     form.reset();
   });
