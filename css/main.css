@@ -474,11 +474,17 @@ section[id] {
   animation-delay: 0.16s;
 }
 
+.hero-title .line:has(.cycle) {
+  overflow: visible;
+  min-height: 1.05em;
+}
+
 .cycle {
   display: inline-grid;
   color: var(--accent);
-  min-height: 1em;
-  min-width: 11ch;
+  min-height: 1.05em;
+  min-width: 12ch;
+  white-space: nowrap;
 }
 
 .cycle span {
@@ -486,6 +492,7 @@ section[id] {
   opacity: 0;
   transform: translateY(28%);
   transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+  white-space: nowrap;
 }
 
 .cycle span.is-on {
@@ -1125,6 +1132,12 @@ section[id] {
 }
 
 .reveal.is-in {
+  animation-play-state: running;
+}
+
+.reveal .word,
+.reveal .cycle,
+.reveal .cycle span {
   animation-play-state: running;
 }
 
