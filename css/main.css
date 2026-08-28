@@ -287,6 +287,7 @@ p {
   box-shadow: var(--shadow), var(--glass-inset);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
+  position: relative;
 }
 
 .logo {
@@ -485,6 +486,18 @@ section[id] {
   min-height: 1.05em;
   min-width: 12ch;
   white-space: nowrap;
+  animation: fade-up 0.8s 0.12s var(--ease-out) both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .cycle span {
@@ -1200,12 +1213,14 @@ section[id] {
     top: calc(100% + 8px);
     left: 0;
     right: 0;
+    z-index: 70;
     padding: 12px;
     border-radius: 24px;
-    background: var(--nav);
+    background: color-mix(in srgb, var(--bg) 92%, var(--glass-strong));
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    box-shadow: var(--shadow-lg);
     flex-direction: column;
     align-items: stretch;
   }
