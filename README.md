@@ -1,20 +1,13 @@
 # Kriva — portfolio
 
-Лендинг портфолио [Kriva](https://github.com/edronbaton): коммерческий опыт 3+ года, кейсы **SotaMaker**, **SotaAds** и Mini Apps.
+Portfolio landing for [Kriva](https://github.com/edronbaton) (Arseniy): 3+ years commercial, SotaMaker, SotaAds, Mini Apps, ~200k monthly users.
 
-## Запуск
-
-Откройте `index.html` или поднимите локальный сервер:
+## Run
 
 ```bash
 python3 -m http.server 4173
 ```
 
-Сайт: `http://localhost:4173`
+Open `http://localhost:4173`
 
-## Что внутри
-
-- Liquid glass, светлая и тёмная темы
-- Плавный скролл и анимации появления
-- Адаптив desktop / tablet / mobile
-- 10 секций и футер
+English by default. Light / dark theme, liquid glass, adaptive layout.
