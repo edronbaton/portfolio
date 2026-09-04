@@ -1614,6 +1614,20 @@ html[data-theme="dark"] .owner-map::after {
   align-items: start;
 }
 
+.phone-pair--single {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.phone-pair--single .phone-bridge {
+  display: none;
+}
+
+.phone-pair--single .iphone-green,
+.phone-pair--single .iphone-violet {
+  transform: none;
+}
+
 .phone-bridge {
   position: absolute;
   left: 16%;

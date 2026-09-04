@@ -1,6 +1,6 @@
 # Kriva — portfolio
 
-Portfolio landing for [Kriva](https://github.com/edronbaton) (Arseniy): 3+ years commercial, SotaMaker, SotaAds, Mini Apps, ~200k monthly users.
+Portfolio landing for [Kriva](https://github.com/edronbaton) (Arseniy): 3+ years commercial, adsota.io, PayCrypto, AICASH, SotaMaker.
 
 ## Run
 
