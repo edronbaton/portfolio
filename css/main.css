@@ -425,6 +425,25 @@ html[data-theme="dark"] .theme-toggle .sun {
   box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
+.btn-solid {
+  background: var(--text);
+  color: #fff;
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .btn-solid {
+  background: #f5f5f7;
+  color: #000;
+}
+
+.btn-solid:hover {
+  background: color-mix(in srgb, var(--text) 88%, #fff);
+}
+
+html[data-theme="dark"] .btn-solid:hover {
+  background: #ffffff;
+}
+
 .btn-case-alt {
   background: color-mix(in srgb, var(--text) 8%, transparent);
   color: var(--text);
@@ -1340,39 +1359,40 @@ html[data-theme="dark"] .owner-map::after {
 }
 
 .spine-track {
-  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  width: 2px;
+  background: color-mix(in srgb, var(--text) 14%, transparent);
 }
 
 .spine-progress {
-  background: var(--accent);
+  width: 2px;
+  background: color-mix(in srgb, var(--text) 55%, transparent);
   transform: translateX(-50%) scaleY(0);
   transform-origin: top center;
-  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: none;
   will-change: transform;
 }
 
 .spine-node {
   position: absolute;
   left: 50%;
-  width: 14px;
-  height: 14px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  border: 2px solid var(--accent);
+  border: 1.5px solid color-mix(in srgb, var(--text) 28%, transparent);
   background: var(--bg);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--bg) 80%, transparent);
+  box-shadow: none;
   pointer-events: auto;
   cursor: pointer;
   padding: 0;
   transform: translate(-50%, -50%);
-  transition: transform 0.35s var(--ease), background 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  transition: transform 0.35s var(--ease), background 0.35s var(--ease), border-color 0.35s var(--ease);
 }
 
 .spine-node.is-on {
-  background: var(--accent);
-  transform: translate(-50%, -50%) scale(1.18);
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--bg) 80%, transparent),
-    0 0 18px color-mix(in srgb, var(--accent) 55%, transparent);
+  background: var(--text);
+  border-color: var(--text);
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow: none;
 }
 
 .app-stage {
@@ -1392,16 +1412,38 @@ html[data-theme="dark"] .owner-map::after {
 .case-card {
   border-radius: var(--radius);
   overflow: hidden;
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+.case-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg), var(--glass-inset);
 }
 
 .case-face {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 22px 28px;
+  gap: 28px 36px;
   width: 100%;
-  padding: 26px 28px;
+  padding: 32px 34px;
   cursor: pointer;
+}
+
+.case-face .kicker {
+  background: transparent;
+  color: var(--muted);
+  padding: 0;
+  margin-bottom: 12px;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.case-face .kicker::before {
+  background: currentColor;
+  box-shadow: none;
+  opacity: 0.45;
 }
 
 .case-face-copy {
@@ -1409,9 +1451,12 @@ html[data-theme="dark"] .owner-map::after {
   flex: 1;
 }
 
-.case-face .display {
-  font-size: clamp(28px, 3.4vw, 40px);
-  margin: 8px 0 8px;
+.case-face .display,
+.ads-brand .display {
+  font-size: clamp(28px, 3.2vw, 40px);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.05em;
 }
 
 .case-lede {
@@ -1458,47 +1503,52 @@ html[data-theme="dark"] .owner-map::after {
 }
 
 .case-peek-phone {
-  width: 70px;
-  height: 124px;
+  width: 78px;
+  height: 158px;
   object-fit: cover;
   object-position: top;
-  border-radius: 14px;
+  border-radius: 20px;
   background: #111;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent),
+    0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
 .case-peek-phone + .case-peek-phone {
-  margin-left: -22px;
-  transform: translateY(8px) rotate(7deg);
+  margin-left: -18px;
+  transform: translateY(10px) rotate(4deg);
 }
 
 .case-peek-web {
-  width: 132px;
-  height: 82px;
+  width: 156px;
+  height: 96px;
   object-fit: cover;
   object-position: top center;
-  border-radius: 12px;
-  background: #eef1f6;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+  border-radius: 16px;
+  background: var(--bg-deep);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent),
+    0 20px 44px rgba(0, 0, 0, 0.1);
 }
 
 .case-peek-web + .case-peek-web {
-  margin-left: -36px;
-  transform: translateY(10px) rotate(6deg);
+  margin-left: -28px;
+  transform: translateY(12px) rotate(3deg);
 }
 
 .case-face-actions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
   flex: 0 0 auto;
 }
 
 .case-face .ads-open {
   min-height: 44px;
-  padding: 0 20px;
+  padding: 0 18px;
   font-size: 15px;
+  box-shadow: none;
 }
 
 .case-face .ads-head {
@@ -1510,7 +1560,7 @@ html[data-theme="dark"] .owner-map::after {
 .case-look {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   margin: 0;
   padding: 0;
   border: 0;
@@ -1518,8 +1568,8 @@ html[data-theme="dark"] .owner-map::after {
   color: var(--accent);
   font: inherit;
   font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: -0.022em;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -1963,12 +2013,14 @@ html[data-theme="dark"] .phone-avatar {
 }
 
 .ads-logo {
-  width: 72px;
-  height: 72px;
-  flex: 0 0 72px;
-  border-radius: 20px;
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  border-radius: 18px;
   object-fit: cover;
-  box-shadow: var(--shadow);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent),
+    0 10px 28px rgba(0, 0, 0, 0.08);
 }
 
 .ads-logo.ads-logo--round {
@@ -1981,25 +2033,25 @@ html[data-theme="dark"] .phone-avatar {
 
 .brand-sub {
   margin: 6px 0 0;
-  color: var(--accent);
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  color: var(--muted);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.022em;
 }
 
 .ads-lede {
   margin: 0;
-  max-width: 52ch;
+  max-width: 46ch;
   color: var(--muted);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 1.47;
 }
 
 .ads-open {
   flex: 0 0 auto;
-  min-height: 64px;
-  padding: 0 34px;
-  font-size: 17px;
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 15px;
 }
 
 .ads-net {
@@ -2009,28 +2061,31 @@ html[data-theme="dark"] .phone-avatar {
 
 .ads-filter {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-wrap: nowrap;
+  gap: 2px;
+  width: max-content;
+  padding: 3px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
 }
 
 .ads-filter button {
-  border: 1px solid var(--glass-border);
-  background: var(--glass);
+  border: 0;
+  background: transparent;
   color: var(--muted);
   font: inherit;
   font-size: 13px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 999px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 9px;
   cursor: pointer;
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
 }
 
 .ads-filter button.is-on {
-  background: var(--accent);
-  color: #fff;
+  background: var(--glass-strong);
+  color: var(--text);
   border-color: transparent;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .ads-graph {
@@ -3232,7 +3287,9 @@ html[data-theme="dark"] {
 
   .case-face-actions {
     width: 100%;
-    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   .case-face .ads-open,
@@ -3302,6 +3359,11 @@ html[data-theme="dark"] {
     align-items: stretch;
   }
 
+  .ads-filter {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
   .ads-open {
     width: 100%;
   }
@@ -3363,10 +3425,10 @@ html[data-theme="dark"] {
   }
 
   .ads-logo {
-    width: 56px;
-    height: 56px;
-    flex-basis: 56px;
-    border-radius: 16px;
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+    border-radius: 14px;
   }
 
   .ads-logo.ads-logo--round {
