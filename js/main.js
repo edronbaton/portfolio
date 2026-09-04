@@ -583,8 +583,6 @@
       "nav.stack": "Stack",
       "nav.process": "Process",
       "nav.about": "About",
-      "nav.contact": "Contact",
-      "nav.cta": "Discuss a project",
       "hero.kicker": "AI Product Builder · Product Engineer",
       "hero.line1": "I build",
       "hero.cycle.0": "products end-to-end",
@@ -706,9 +704,6 @@
       "about.li4": "Young, sharp and hungry to grow alongside the best.",
       "about.quote": "I work for results, not activity.",
       "about.phone.alt": "iPhone showing +$10 000 payment received from SotaAds LLC",
-      "contact.kicker": "Let’s talk",
-      "contact.title": "Let’s build the next product",
-      "contact.lede": "Landing, platform, SaaS, crypto plugin, bot or automation — message me on GitHub and we’ll unpack the job.",
     },
     ru: {
       "meta.title": "Kriva Portfolio",
@@ -725,8 +720,6 @@
       "nav.stack": "Стек",
       "nav.process": "Процесс",
       "nav.about": "Обо мне",
-      "nav.contact": "Контакт",
-      "nav.cta": "Обсудить проект",
       "hero.kicker": "AI Product Builder · Product Engineer",
       "hero.line1": "Я создаю",
       "hero.cycle.0": "продукты под ключ",
@@ -848,9 +841,6 @@
       "about.li4": "Молодой, острый и голодный расти рядом с лучшими.",
       "about.quote": "Я работаю на результат, а не на активность.",
       "about.phone.alt": "iPhone с платежом +$10 000 от SotaAds LLC",
-      "contact.kicker": "Давайте обсудим",
-      "contact.title": "Соберём следующий продукт",
-      "contact.lede": "Лендинг, платформа, SaaS, крипто-плагин, бот или автоматизация — напишите мне в GitHub, разберём задачу.",
     },
   };
 

@@ -238,8 +238,7 @@ p {
 }
 
 .about-card > .kicker,
-.feature-copy > .kicker,
-.contact-box > div > .kicker {
+.feature-copy > .kicker {
   margin-bottom: 22px;
 }
 
@@ -3028,15 +3027,6 @@ html[data-theme="dark"] {
   margin-bottom: 4px;
 }
 
-.contact-box {
-  padding: clamp(28px, 5vw, 48px);
-  border-radius: 36px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
-  max-width: 720px;
-}
-
 .footer {
   padding: 28px 0 48px;
   color: var(--muted);
@@ -3106,7 +3096,6 @@ html[data-theme="dark"] {
   .hero-side,
   .about-grid,
   .feature-banner,
-  .contact-box,
   .proof-grid,
   .process-grid {
     grid-template-columns: 1fr;
