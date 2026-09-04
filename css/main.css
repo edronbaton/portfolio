@@ -3165,7 +3165,6 @@ html[data-theme="dark"] {
 
   .case-echo-art {
     min-height: 0;
-    max-height: none;
     width: 100%;
     aspect-ratio: 16 / 10;
     max-height: 200px;
