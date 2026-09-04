@@ -3159,20 +3159,11 @@ html[data-theme="dark"] {
   .case-echo {
     grid-template-columns: 1fr;
     min-height: 0;
-    gap: 14px;
+    gap: 0;
   }
 
   .case-echo-art {
-    min-height: 0;
-    width: min(100%, 220px);
-    height: 240px;
-    max-height: 240px;
-    margin-inline: auto;
-  }
-
-  .case-echo-image {
-    object-fit: contain;
-    object-position: center top;
+    display: none;
   }
 
   .nav-links {
