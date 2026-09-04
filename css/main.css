@@ -1971,6 +1971,10 @@ html[data-theme="dark"] .phone-avatar {
   box-shadow: var(--shadow);
 }
 
+.ads-logo.ads-logo--round {
+  border-radius: 50%;
+}
+
 .ads-brand .display {
   margin: 0;
 }
@@ -3363,6 +3367,10 @@ html[data-theme="dark"] {
     height: 56px;
     flex-basis: 56px;
     border-radius: 16px;
+  }
+
+  .ads-logo.ads-logo--round {
+    border-radius: 50%;
   }
 
   .hero-title {
