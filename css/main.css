@@ -1336,10 +1336,30 @@ html[data-theme="dark"] .owner-map::after {
 .case-stream {
   position: relative;
   overflow-x: clip;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
   padding: 40px 0 56px;
+}
+
+.case-stack {
+  overflow: hidden;
+}
+
+.case-stack > [data-case] .case-card {
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.case-stack > [data-case]:last-of-type .case-card {
+  border-bottom: 0;
+}
+
+.case-stack > [data-case] .case-card:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .case-spine {
@@ -1542,6 +1562,7 @@ html[data-theme="dark"] .owner-map::after {
   align-items: center;
   gap: 16px;
   flex: 0 0 auto;
+  margin-top: 18px;
 }
 
 .case-face .ads-open {
@@ -1989,20 +2010,12 @@ html[data-theme="dark"] .phone-avatar {
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 32px;
-}
-
-.ads-head-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 36px;
-  width: 100%;
+  margin-bottom: 0;
 }
 
 .ads-head-main {
   min-width: 0;
-  flex: 1;
+  width: 100%;
 }
 
 .ads-brand {
