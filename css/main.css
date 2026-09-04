@@ -1336,7 +1336,10 @@ html[data-theme="dark"] .owner-map::after {
 .case-stream {
   position: relative;
   overflow-x: clip;
-  padding: 56px 0 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 40px 0 56px;
 }
 
 .case-spine {
@@ -1399,14 +1402,11 @@ html[data-theme="dark"] .owner-map::after {
   padding-top: 88px;
 }
 
-.case-stream .section {
-  padding: 12px 0;
-}
-
+.case-stream .section,
 .case-stream .app-stage,
 .case-stream .ads-stage,
 .case-stream .feature {
-  padding-top: 12px;
+  padding: 0;
 }
 
 .case-card {
@@ -2094,6 +2094,14 @@ html[data-theme="dark"] .phone-avatar {
   gap: 22px;
   align-items: center;
   position: relative;
+}
+
+#paycrypto .ads-graph {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#paycrypto .ads-col {
+  display: contents;
 }
 
 .ads-col {
