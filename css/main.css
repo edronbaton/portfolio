@@ -569,9 +569,10 @@ section[id] {
 }
 
 .hero-bottom p {
-  max-width: 36ch;
+  max-width: 42ch;
   color: var(--muted);
   font-size: 16px;
+  letter-spacing: -0.015em;
 }
 
 .hero-side {
