@@ -499,11 +499,14 @@
     const name = String(data.get("name") || "").trim();
     const contact = String(data.get("contact") || "").trim();
     const message = String(data.get("message") || "").trim();
-    const text = `Hi Kriva. This is ${name}. Contact: ${contact}. ${message}`;
+    const dict = (window.__krivaDict || {});
+    const textTpl = dict["contact.mailbody"] || "Hi Kriva. This is {name}. Contact: {contact}. {message}";
+    const text = textTpl.replace("{name}", name).replace("{contact}", contact).replace("{message}", message);
     form.classList.add("success");
     const note = form.querySelector(".form-note");
     if (note) {
-      note.textContent = "Copied. Message Kriva on GitHub — link on the left.";
+      note.textContent = dict["contact.copied"] || "Copied. Message Kriva on GitHub — link on the left.";
+      note.dataset.i18n = "contact.copied";
     }
     navigator.clipboard?.writeText(text).catch(() => {});
     form.reset();
@@ -539,20 +542,25 @@
         while (week.length < 7) week.push(null);
         weeks.push(week);
       }
-      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      let lastMonth = -1;
-      if (monthsEl) {
-        monthsEl.innerHTML = weeks
+      window.__krivaGhWeeks = weeks;
+      const paintMonths = () => {
+        if (!monthsEl || !window.__krivaGhWeeks) return;
+        const dict = window.__krivaDict || {};
+        const months = (dict["stack.gh.months"] || "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec").split(",");
+        let lastMonth = -1;
+        monthsEl.innerHTML = window.__krivaGhWeeks
           .map((column, i) => {
             const hit = column.find(Boolean);
             if (!hit) return "";
             const month = new Date(`${hit.date}T00:00:00`).getMonth();
             if (month === lastMonth) return "";
             lastMonth = month;
-            return `<span style="--col:${i + 1}">${months[month]}</span>`;
+            return `<span style="--col:${i + 1}">${months[month] || ""}</span>`;
           })
           .join("");
-      }
+      };
+      paintMonths();
+      window.__krivaPaintGhMonths = paintMonths;
       const frag = document.createDocumentFragment();
       weeks.forEach((column) => {
         column.forEach((day) => {
@@ -562,7 +570,10 @@
             cell.classList.add("is-empty");
           } else {
             cell.dataset.level = String(day.level ?? 0);
-            cell.title = `${day.date}: ${day.count} contribution${day.count === 1 ? "" : "s"}`;
+            const dict = window.__krivaDict || {};
+            const one = dict["stack.gh.one"] || "contribution";
+            const many = dict["stack.gh.many"] || "contributions";
+            cell.title = `${day.date}: ${day.count} ${day.count === 1 ? one : many}`;
           }
           frag.append(cell);
         });
@@ -578,6 +589,14 @@
   // ── i18n ──────────────────────────────────────────────────────────────────
   const TRANSLATIONS = {
     en: {
+      "meta.title": "Kriva Portfolio",
+      "meta.description": "Portfolio of Arseniy (Kriva): 3+ years of commercial work. Landings, web platforms, SaaS, crypto plugins, Telegram bots, software and automation. About 200k real users monthly.",
+      "a11y.skip": "Skip to content",
+      "a11y.lang": "Switch language",
+      "a11y.theme": "Toggle theme",
+      "a11y.menu": "Menu",
+      "a11y.map": "Map of Malmö, Sweden",
+      "a11y.sections": "Sections",
       "nav.experience": "Experience",
       "nav.cases": "Cases",
       "nav.path": "Path",
@@ -598,19 +617,66 @@
       "hero.cta": "View cases",
       "hero.card.role": "AI Product Builder",
       "hero.card.speech": "AI Product Builder and Product Engineer. I take ideas from zero to live — product, engineering, AI and ship.",
-      "process.kicker": "How I build",
-      "process.title": "A short cycle to a live product",
-      "process.lede": "I build products end-to-end",
-      "process.step1.title": "Product",
-      "process.step1.body": "Turn vague ideas into working products, define MVP scope and prioritize features.",
-      "process.step2.title": "Engineering",
-      "process.step2.body": "Build backend systems, APIs, databases, integrations and infrastructure.",
-      "process.step3.title": "Payments",
-      "process.step3.body": "Design payment flows, checkout, invoices, transaction states and monetization logic.",
-      "process.step4.title": "AI & Automation",
-      "process.step4.body": "Use LLMs, agents and AI-native development workflows to prototype and automate.",
-      "process.step5.title": "Launch & Growth",
-      "process.step5.body": "Deploy, monitor, measure usage and iterate based on real users.",
+      "hero.map.country": "Sweden",
+      "traffic.kicker": "Live reach",
+      "traffic.label": "real monthly users",
+      "traffic.note": "Traffic across live products — people who actually open and use them, every month.",
+      "proof.years": "years of commercial work",
+      "proof.users": "real monthly users",
+      "proof.products": "shipped products and cases",
+      "proof.web": "landings, SaaS and platforms",
+      "case.n01": "Case 01",
+      "case.n02": "Case 02",
+      "case.n03": "Case 03",
+      "case.look": "Look inside",
+      "case.less": "Show less",
+      "adsota.sub": "Telegram Ad Network",
+      "adsota.lede": "Launch Telegram campaigns, target the audience, pick a format and watch live analytics — the same cabinet advertisers use.",
+      "adsota.open": "Open adsota.io",
+      "pay.sub": "Private payment gateway",
+      "pay.lede": "Crypto invoices with USDT on multiple chains, a timed checkout, WalletConnect and a live admin console — a private gateway for payments, not a public storefront.",
+      "pay.open": "Request access",
+      "aicash.sub": "Telegram Mini App",
+      "aicash.lede": "Hire AI workers, run the office, complete quests and withdraw — a live Mini App with real monthly users.",
+      "aicash.detail": "Hire AI workers, buy credits, run quests and withdraw. Idle office with a shop and team.",
+      "filter.landing": "Landing",
+      "filter.platform": "Platform",
+      "filter.brand": "Brand",
+      "filter.checkout": "Checkout",
+      "ads.col.demand": "Demand",
+      "ads.col.network": "Network",
+      "ads.col.supply": "Supply",
+      "ads.node.landing": "Landing",
+      "ads.node.campaigns": "Campaigns",
+      "ads.node.editor": "Editor",
+      "ads.node.formats": "Formats",
+      "ads.node.analytics": "Analytics",
+      "ads.node.docs": "Docs",
+      "ads.node.brand": "Brand",
+      "ads.node.mark": "Mark",
+      "ads.node.publishers": "Publishers",
+      "ads.node.resources": "Resources",
+      "ads.node.withdraw": "Withdraw",
+      "pay.node.invoice": "Invoice",
+      "pay.node.currency": "Currency",
+      "pay.node.network": "Network",
+      "pay.node.proceed": "Proceed",
+      "pay.node.pay": "Pay",
+      "pay.node.wallet": "Wallet",
+      "pay.node.admin": "Admin",
+      "ui.close": "Close",
+      "more.kicker": "Selected work",
+      "more.title": "More products and cases",
+      "more.lede": "Bots, libraries, AI products and tools — built and shipped.",
+      "more.echo.body": "AI companion bot with subscription payments, gifts and OpenRouter-based dialogues. Built as a monetized Telegram product, not a demo.",
+      "more.sotamaker.body": "Constructor for viral traffic bots in Telegram. Set up flows, invite mechanics and monetization — no code needed.",
+      "more.smart.body": "Smart message renderer for Aiogram — JSON templates, dynamic keyboards, multi-language, notifications and async-first architecture.",
+      "more.open.tg": "Open in Telegram",
+      "more.open.gh": "GitHub",
+      "more.open.pypi": "PyPI",
+      "badge.dating": "Dating",
+      "badge.payments": "Payments",
+      "badge.tool": "Tool",
       "cases.more.title": "And more",
       "cases.more.label": "projects",
       "cases.more.caption": "Landings, bots, plugins and internal tools besides the cases above.",
@@ -624,8 +690,62 @@
       "path.y2025.body": "Moved into projects with live payment flows — subscriptions, transfers and monetization that actually settles.",
       "path.y2026.title": "Still shipping",
       "path.y2026.body": "Continuing end-to-end: bots, platforms and products with payments in production.",
+      "stack.kicker": "Stack",
+      "stack.title": "Tools I build products with",
+      "stack.tma": "Telegram Mini Apps",
+      "stack.gh.suffix": "contributions in the last year",
+      "stack.gh.mon": "Mon",
+      "stack.gh.wed": "Wed",
+      "stack.gh.fri": "Fri",
+      "stack.gh.less": "Less",
+      "stack.gh.more": "More",
+      "stack.gh.months": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
+      "stack.gh.one": "contribution",
+      "stack.gh.many": "contributions",
+      "process.kicker": "How I build",
+      "process.title": "A short cycle to a live product",
+      "process.lede": "I build products end-to-end",
+      "process.step1.title": "Product",
+      "process.step1.body": "Turn vague ideas into working products, define MVP scope and prioritize features.",
+      "process.step2.title": "Engineering",
+      "process.step2.body": "Build backend systems, APIs, databases, integrations and infrastructure.",
+      "process.step3.title": "Payments",
+      "process.step3.body": "Design payment flows, checkout, invoices, transaction states and monetization logic.",
+      "process.step4.title": "AI & Automation",
+      "process.step4.body": "Use LLMs, agents and AI-native development workflows to prototype and automate.",
+      "process.step5.title": "Launch & Growth",
+      "process.step5.body": "Deploy, monitor, measure usage and iterate based on real users.",
+      "about.kicker": "About",
+      "about.title": "About me",
+      "about.lede": "CEO with an engineering core. I don’t stop at Python — I own the product, the infra and the ship date.",
+      "about.card.title": "I run the product, not only the code",
+      "about.card.body": "More than three years in commercial work — as the person who decides, deploys and supports. Python is in the toolkit. So are Docker, PostgreSQL, Redis, bots, Mini Apps and SaaS. Live systems, not a resume stack.",
+      "about.li1": "CEO: product, team, clients — and I still open the repo.",
+      "about.li2": "Infra I actually use: Docker, PostgreSQL, Redis, Git, production deploys.",
+      "about.li3": "Landings, platforms, Telegram, crypto plugins and automation when the job lives there.",
+      "about.li4": "Young, sharp and hungry to grow alongside the best.",
+      "about.quote": "I work for results, not activity.",
+      "about.phone.alt": "iPhone showing +$10 000 payment received from SotaAds LLC",
+      "contact.kicker": "Let’s talk",
+      "contact.title": "Let’s build the next product",
+      "contact.lede": "Landing, platform, SaaS, crypto plugin, bot or automation — write in, we’ll unpack the job. Replies go through GitHub.",
+      "contact.name": "Name",
+      "contact.contact": "Telegram or email",
+      "contact.message": "Short note about the task",
+      "contact.send": "Send",
+      "contact.note": "Nothing is stored on a server — the text is copied, then the chat continues on GitHub.",
+      "contact.copied": "Copied. Message Kriva on GitHub — link on the left.",
+      "contact.mailbody": "Hi Kriva. This is {name}. Contact: {contact}. {message}",
     },
     ru: {
+      "meta.title": "Kriva Portfolio",
+      "meta.description": "Портфолио Arseniy (Kriva): 3+ года коммерческой работы. Лендинги, веб-платформы, SaaS, крипто-плагины, Telegram-боты, софт и автоматизация. Около 200k реальных пользователей в месяц.",
+      "a11y.skip": "К содержанию",
+      "a11y.lang": "Сменить язык",
+      "a11y.theme": "Сменить тему",
+      "a11y.menu": "Меню",
+      "a11y.map": "Карта Мальмё, Швеция",
+      "a11y.sections": "Разделы",
       "nav.experience": "Опыт",
       "nav.cases": "Кейсы",
       "nav.path": "Путь",
@@ -646,19 +766,66 @@
       "hero.cta": "Посмотреть кейсы",
       "hero.card.role": "AI Product Builder",
       "hero.card.speech": "AI Product Builder и Product Engineer. Веду продукт от нуля до запуска — продукт, инженерия, AI и шип.",
-      "process.kicker": "Как я строю продукты",
-      "process.title": "Короткий цикл до живого продукта",
-      "process.lede": "Я строю продукты под ключ",
-      "process.step1.title": "Продукт",
-      "process.step1.body": "Превращаю размытые идеи в рабочие продукты, определяю MVP и приоритеты фич.",
-      "process.step2.title": "Инженерия",
-      "process.step2.body": "Строю бэкенд, API, базы данных, интеграции и инфраструктуру.",
-      "process.step3.title": "Платежи",
-      "process.step3.body": "Проектирую платёжные флоу, чекаут, инвойсы, состояния транзакций и монетизацию.",
-      "process.step4.title": "AI и автоматизация",
-      "process.step4.body": "Использую LLM, агентов и AI-native подходы для прототипирования и автоматизации.",
-      "process.step5.title": "Запуск и рост",
-      "process.step5.body": "Деплой, мониторинг, аналитика и итерации на основе реальных пользователей.",
+      "hero.map.country": "Швеция",
+      "traffic.kicker": "Живой охват",
+      "traffic.label": "реальных пользователей в месяц",
+      "traffic.note": "Трафик по живым продуктам — люди, которые реально открывают и пользуются ими каждый месяц.",
+      "proof.years": "лет коммерческой работы",
+      "proof.users": "реальных пользователей в месяц",
+      "proof.products": "запущенных продуктов и кейсов",
+      "proof.web": "лендинги, SaaS и платформы",
+      "case.n01": "Кейс 01",
+      "case.n02": "Кейс 02",
+      "case.n03": "Кейс 03",
+      "case.look": "Смотреть внутри",
+      "case.less": "Свернуть",
+      "adsota.sub": "Рекламная сеть Telegram",
+      "adsota.lede": "Запускайте Telegram-кампании, выбирайте аудиторию и формат, смотрите живую аналитику — тот же кабинет, которым пользуются рекламодатели.",
+      "adsota.open": "Открыть adsota.io",
+      "pay.sub": "Приватный платёжный шлюз",
+      "pay.lede": "Крипто-инвойсы с USDT в нескольких сетях, чекаут с таймером, WalletConnect и живая админка — приватный шлюз для платежей, а не публичная витрина.",
+      "pay.open": "Запросить доступ",
+      "aicash.sub": "Telegram Mini App",
+      "aicash.lede": "Нанимайте AI-сотрудников, ведите офис, выполняйте квесты и выводите средства — живое Mini App с реальной аудиторией.",
+      "aicash.detail": "Нанимайте AI-сотрудников, покупайте кредиты, выполняйте квесты и выводите. Idle-офис с магазином и командой.",
+      "filter.landing": "Лендинг",
+      "filter.platform": "Платформа",
+      "filter.brand": "Бренд",
+      "filter.checkout": "Чекаут",
+      "ads.col.demand": "Спрос",
+      "ads.col.network": "Сеть",
+      "ads.col.supply": "Предложение",
+      "ads.node.landing": "Лендинг",
+      "ads.node.campaigns": "Кампании",
+      "ads.node.editor": "Редактор",
+      "ads.node.formats": "Форматы",
+      "ads.node.analytics": "Аналитика",
+      "ads.node.docs": "Документация",
+      "ads.node.brand": "Бренд",
+      "ads.node.mark": "Знак",
+      "ads.node.publishers": "Паблишеры",
+      "ads.node.resources": "Ресурсы",
+      "ads.node.withdraw": "Вывод",
+      "pay.node.invoice": "Инвойс",
+      "pay.node.currency": "Валюта",
+      "pay.node.network": "Сеть",
+      "pay.node.proceed": "Продолжить",
+      "pay.node.pay": "Оплата",
+      "pay.node.wallet": "Кошелёк",
+      "pay.node.admin": "Админка",
+      "ui.close": "Закрыть",
+      "more.kicker": "Избранные работы",
+      "more.title": "Ещё продукты и кейсы",
+      "more.lede": "Боты, библиотеки, AI-продукты и инструменты — собраны и запущены.",
+      "more.echo.body": "AI-компаньон бот с подписками, подарками и диалогами на OpenRouter. Монетизированный Telegram-продукт, а не демо.",
+      "more.sotamaker.body": "Конструктор вирусных трафиковых ботов в Telegram. Настраивайте флоу, инвайты и монетизацию — без кода.",
+      "more.smart.body": "Умный рендерер сообщений для Aiogram — JSON-шаблоны, динамические клавиатуры, мультиязычность, уведомления и async-first архитектура.",
+      "more.open.tg": "Открыть в Telegram",
+      "more.open.gh": "GitHub",
+      "more.open.pypi": "PyPI",
+      "badge.dating": "Дейтинг",
+      "badge.payments": "Платежи",
+      "badge.tool": "Инструмент",
       "cases.more.title": "И ещё",
       "cases.more.label": "проектов",
       "cases.more.caption": "Лендинги, боты, плагины и внутренние инструменты помимо кейсов выше.",
@@ -672,6 +839,52 @@
       "path.y2025.body": "Вышел на проекты с реальными платежами — подписки, переводы и монетизация, которая реально проходит.",
       "path.y2026.title": "Продолжаю шипить",
       "path.y2026.body": "Дальше end-to-end: боты, платформы и продукты с платежами в проде.",
+      "stack.kicker": "Стек",
+      "stack.title": "Инструменты, на которых я собираю продукты",
+      "stack.tma": "Telegram Mini Apps",
+      "stack.gh.suffix": "контрибуций за последний год",
+      "stack.gh.mon": "Пн",
+      "stack.gh.wed": "Ср",
+      "stack.gh.fri": "Пт",
+      "stack.gh.less": "Меньше",
+      "stack.gh.more": "Больше",
+      "stack.gh.months": "Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек",
+      "stack.gh.one": "контрибуция",
+      "stack.gh.many": "контрибуций",
+      "process.kicker": "Как я строю продукты",
+      "process.title": "Короткий цикл до живого продукта",
+      "process.lede": "Я строю продукты под ключ",
+      "process.step1.title": "Продукт",
+      "process.step1.body": "Превращаю размытые идеи в рабочие продукты, определяю MVP и приоритеты фич.",
+      "process.step2.title": "Инженерия",
+      "process.step2.body": "Строю бэкенд, API, базы данных, интеграции и инфраструктуру.",
+      "process.step3.title": "Платежи",
+      "process.step3.body": "Проектирую платёжные флоу, чекаут, инвойсы, состояния транзакций и монетизацию.",
+      "process.step4.title": "AI и автоматизация",
+      "process.step4.body": "Использую LLM, агентов и AI-native подходы для прототипирования и автоматизации.",
+      "process.step5.title": "Запуск и рост",
+      "process.step5.body": "Деплой, мониторинг, аналитика и итерации на основе реальных пользователей.",
+      "about.kicker": "Обо мне",
+      "about.title": "Обо мне",
+      "about.lede": "CEO с инженерным ядром. Не останавливаюсь на Python — отвечаю за продукт, инфру и дату шипа.",
+      "about.card.title": "Я веду продукт, а не только код",
+      "about.card.body": "Больше трёх лет в коммерческой работе — как человек, который решает, деплоит и поддерживает. Python в тулките. Также Docker, PostgreSQL, Redis, боты, Mini Apps и SaaS. Живые системы, а не стек для резюме.",
+      "about.li1": "CEO: продукт, команда, клиенты — и я всё ещё открываю репозиторий.",
+      "about.li2": "Инфра, которой реально пользуюсь: Docker, PostgreSQL, Redis, Git, продовые деплои.",
+      "about.li3": "Лендинги, платформы, Telegram, крипто-плагины и автоматизация — когда задача там.",
+      "about.li4": "Молодой, острый и голодный расти рядом с лучшими.",
+      "about.quote": "Я работаю на результат, а не на активность.",
+      "about.phone.alt": "iPhone с платежом +$10 000 от SotaAds LLC",
+      "contact.kicker": "Давайте обсудим",
+      "contact.title": "Соберём следующий продукт",
+      "contact.lede": "Лендинг, платформа, SaaS, крипто-плагин, бот или автоматизация — напишите, разберём задачу. Отвечаю через GitHub.",
+      "contact.name": "Имя",
+      "contact.contact": "Telegram или email",
+      "contact.message": "Коротко о задаче",
+      "contact.send": "Отправить",
+      "contact.note": "На сервере ничего не хранится — текст копируется, дальше переписка продолжается в GitHub.",
+      "contact.copied": "Скопировано. Напишите Kriva в GitHub — ссылка слева.",
+      "contact.mailbody": "Привет, Kriva. Это {name}. Контакт: {contact}. {message}",
     },
   };
 
@@ -683,13 +896,35 @@
       lang = l;
       localStorage.setItem("kriva-lang", l);
       const dict = TRANSLATIONS[l] || TRANSLATIONS.en;
+      window.__krivaDict = dict;
       document.querySelectorAll("[data-i18n]").forEach((el) => {
         const key = el.dataset.i18n;
         if (dict[key] !== undefined) el.textContent = dict[key];
       });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        const key = el.dataset.i18nPlaceholder;
+        if (dict[key] !== undefined) el.setAttribute("placeholder", dict[key]);
+      });
+      document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+        const key = el.dataset.i18nAria;
+        if (dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
+      });
+      document.querySelectorAll("[data-i18n-content]").forEach((el) => {
+        const key = el.dataset.i18nContent;
+        if (dict[key] !== undefined) el.setAttribute("content", dict[key]);
+      });
+      document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+        const key = el.dataset.i18nAlt;
+        if (dict[key] !== undefined) el.setAttribute("alt", dict[key]);
+      });
+      const titleEl = document.querySelector("title[data-i18n]");
+      if (titleEl && dict[titleEl.dataset.i18n] !== undefined) {
+        document.title = dict[titleEl.dataset.i18n];
+      }
       document.documentElement.lang = l === "ru" ? "ru" : "en";
       const btn = document.querySelector("[data-lang-toggle]");
       if (btn) btn.textContent = l === "ru" ? "RU" : "EN";
+      if (typeof window.__krivaPaintGhMonths === "function") window.__krivaPaintGhMonths();
     };
 
     apply(lang);
