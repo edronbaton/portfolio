@@ -1335,126 +1335,51 @@ html[data-theme="dark"] .owner-map::after {
 
 .case-stream {
   position: relative;
-  overflow-x: clip;
-  padding: 40px 0 56px;
+  z-index: 1;
+  display: grid;
+  gap: 28px;
+  padding: 56px 0 72px;
 }
 
-.case-stack {
-  overflow: hidden;
-}
-
-.case-stack > [data-case] .case-card {
-  border-radius: 0;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.case-stack > [data-case]:last-of-type .case-card {
-  border-bottom: 0;
-}
-
-.case-stack > [data-case] .case-card:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-.case-spine {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: max(10px, calc((100% - min(var(--container), calc(100% - 40px))) / 2 - 28px));
-  width: 22px;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.spine-track,
-.spine-progress {
-  position: absolute;
-  left: 50%;
-  width: 3px;
-  border-radius: 999px;
-  transform: translateX(-50%);
-}
-
-.spine-track {
-  width: 2px;
-  background: color-mix(in srgb, var(--text) 14%, transparent);
-}
-
-.spine-progress {
-  width: 2px;
-  background: color-mix(in srgb, var(--text) 55%, transparent);
-  transform: translateX(-50%) scaleY(0);
-  transform-origin: top center;
-  box-shadow: none;
-  will-change: transform;
-}
-
-.spine-node {
-  position: absolute;
-  left: 50%;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 1.5px solid color-mix(in srgb, var(--text) 28%, transparent);
-  background: var(--bg);
-  box-shadow: none;
-  pointer-events: auto;
-  cursor: pointer;
-  padding: 0;
-  transform: translate(-50%, -50%);
-  transition: transform 0.35s var(--ease), background 0.35s var(--ease), border-color 0.35s var(--ease);
-}
-
-.spine-node.is-on {
-  background: var(--text);
-  border-color: var(--text);
-  transform: translate(-50%, -50%) scale(1.12);
-  box-shadow: none;
-}
-
-.app-stage {
-  padding-top: 88px;
-}
-
-.case-stream .section,
-.case-stream .app-stage,
-.case-stream .ads-stage,
-.case-stream .feature {
+.case-show {
   padding: 0;
 }
 
-.case-card {
-  border-radius: var(--radius);
+.case-stage {
+  border-radius: calc(var(--radius) + 8px);
   overflow: hidden;
-  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
 }
 
-.case-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg), var(--glass-inset);
-}
-
-.case-face {
-  display: flex;
+.case-face.case-stage-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 28px 36px;
+  gap: 28px 40px;
   width: 100%;
-  padding: 32px 34px;
+  padding: clamp(28px, 4vw, 44px);
   cursor: pointer;
+}
+
+.case-stage-grid--flip .case-stage-copy {
+  order: 2;
+}
+
+.case-stage-grid--flip .case-stage-media {
+  order: 1;
+}
+
+.case-stage-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .case-face .kicker {
   background: transparent;
   color: var(--muted);
   padding: 0;
-  margin-bottom: 12px;
+  margin-bottom: 18px;
   letter-spacing: 0.14em;
   font-size: 11px;
   font-weight: 600;
@@ -1466,17 +1391,94 @@ html[data-theme="dark"] .owner-map::after {
   opacity: 0.45;
 }
 
-.case-face-copy {
-  min-width: 0;
-  flex: 1;
-}
-
 .case-face .display,
 .ads-brand .display {
-  font-size: clamp(28px, 3.2vw, 40px);
+  font-size: clamp(32px, 4vw, 48px);
   margin: 0;
   font-weight: 700;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.055em;
+}
+
+.case-stage-media {
+  position: relative;
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.case-stage-media--phones {
+  min-height: 340px;
+}
+
+.case-media-browser {
+  position: relative;
+  width: min(100%, 460px);
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg-deep);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent),
+    0 28px 60px rgba(0, 0, 0, 0.14);
+  transform: perspective(1200px) rotateY(-8deg) rotateX(4deg);
+}
+
+.case-media-browser--offset {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  width: min(72%, 340px);
+  transform: perspective(1200px) rotateY(-4deg) rotateX(2deg) translate(8%, 6%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent),
+    0 22px 48px rgba(0, 0, 0, 0.16);
+  z-index: 1;
+}
+
+.case-media-browser .browser-chrome {
+  border-radius: 0;
+}
+
+.case-media-browser img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.case-media-phone {
+  position: relative;
+  width: min(46%, 190px);
+  margin: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #111;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 28px 60px rgba(0, 0, 0, 0.28);
+  transform: rotate(-6deg);
+}
+
+.case-media-phone--offset {
+  position: absolute;
+  right: 12%;
+  bottom: 0;
+  transform: rotate(8deg) translateY(4%);
+  z-index: 1;
+}
+
+.case-media-phone img {
+  width: 100%;
+  aspect-ratio: 9 / 19.5;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+[data-case].is-open .case-stage-media {
+  display: none;
 }
 
 .case-lede {
@@ -1560,9 +1562,9 @@ html[data-theme="dark"] .owner-map::after {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 16px;
-  flex: 0 0 auto;
-  margin-top: 18px;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  margin-top: 22px;
 }
 
 .case-face .ads-open {
@@ -1572,10 +1574,12 @@ html[data-theme="dark"] .owner-map::after {
   box-shadow: none;
 }
 
-.case-face .ads-head {
-  margin: 0;
-  flex: 1;
-  min-width: 0;
+.case-stage-copy .ads-brand {
+  margin-bottom: 16px;
+}
+
+.case-stage-copy .ads-lede {
+  max-width: 38ch;
 }
 
 .case-look {
@@ -1617,10 +1621,6 @@ html[data-theme="dark"] .owner-map::after {
   transform: rotate(180deg);
 }
 
-[data-case].is-open .case-peek {
-  display: none;
-}
-
 .case-detail {
   display: grid;
   grid-template-rows: 0fr;
@@ -1634,12 +1634,12 @@ html[data-theme="dark"] .owner-map::after {
 .case-detail-inner {
   overflow: hidden;
   min-height: 0;
-  padding: 0 28px;
+  padding: 0 clamp(28px, 4vw, 44px);
 }
 
 [data-case].is-open .case-detail-inner {
-  padding-bottom: 28px;
-  padding-top: 8px;
+  padding-bottom: clamp(28px, 4vw, 44px);
+  padding-top: 18px;
   border-top: 1px solid var(--line);
 }
 
@@ -3291,37 +3291,69 @@ html[data-theme="dark"] {
     display: none;
   }
 
-  .case-face {
-    flex-wrap: wrap;
-    padding: 20px 18px;
+  .case-face.case-stage-grid,
+  .case-stage-grid--flip .case-stage-copy,
+  .case-stage-grid--flip .case-stage-media {
+    display: flex;
+    flex-direction: column;
+    order: initial;
   }
 
-  .case-peek-phone {
-    width: 52px;
-    height: 92px;
+  .case-face.case-stage-grid {
+    gap: 22px;
+    padding: 24px 20px;
   }
 
-  .case-peek-web {
-    width: 96px;
-    height: 60px;
+  .case-stage-media,
+  .case-stage-media--phones {
+    min-height: 0;
+    width: 100%;
+  }
+
+  .case-media-browser,
+  .case-media-browser--offset {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    transform: none;
+  }
+
+  .case-media-browser--offset {
+    display: none;
+  }
+
+  .case-stage-media--phones {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .case-media-phone,
+  .case-media-phone--offset {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(42%, 150px);
+    transform: none;
+  }
+
+  .case-media-phone {
+    transform: rotate(-4deg);
+  }
+
+  .case-media-phone--offset {
+    transform: rotate(5deg);
   }
 
   .case-face-actions {
     width: 100%;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
-  .case-face .ads-open,
-  .case-look {
-    justify-content: center;
   }
 
   .case-detail-inner,
   [data-case].is-open .case-detail-inner {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .phone-pair {
@@ -3373,11 +3405,6 @@ html[data-theme="dark"] {
 
   .case-spine {
     display: none;
-  }
-
-  .ads-head-row {
-    flex-direction: column;
-    align-items: stretch;
   }
 
   .ads-filter {
