@@ -492,26 +492,6 @@
 
   document.querySelectorAll("[data-gallery]").forEach(bindGallery);
 
-  const form = document.querySelector(".form");
-  form?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const data = new FormData(form);
-    const name = String(data.get("name") || "").trim();
-    const contact = String(data.get("contact") || "").trim();
-    const message = String(data.get("message") || "").trim();
-    const dict = (window.__krivaDict || {});
-    const textTpl = dict["contact.mailbody"] || "Hi Kriva. This is {name}. Contact: {contact}. {message}";
-    const text = textTpl.replace("{name}", name).replace("{contact}", contact).replace("{message}", message);
-    form.classList.add("success");
-    const note = form.querySelector(".form-note");
-    if (note) {
-      note.textContent = dict["contact.copied"] || "Copied. Message Kriva on GitHub — link on the left.";
-      note.dataset.i18n = "contact.copied";
-    }
-    navigator.clipboard?.writeText(text).catch(() => {});
-    form.reset();
-  });
-
   const initGithub = async () => {
     const root = document.querySelector("[data-github]");
     if (!root) return;
@@ -728,14 +708,7 @@
       "about.phone.alt": "iPhone showing +$10 000 payment received from SotaAds LLC",
       "contact.kicker": "Let’s talk",
       "contact.title": "Let’s build the next product",
-      "contact.lede": "Landing, platform, SaaS, crypto plugin, bot or automation — write in, we’ll unpack the job. Replies go through GitHub.",
-      "contact.name": "Name",
-      "contact.contact": "Telegram or email",
-      "contact.message": "Short note about the task",
-      "contact.send": "Send",
-      "contact.note": "Nothing is stored on a server — the text is copied, then the chat continues on GitHub.",
-      "contact.copied": "Copied. Message Kriva on GitHub — link on the left.",
-      "contact.mailbody": "Hi Kriva. This is {name}. Contact: {contact}. {message}",
+      "contact.lede": "Landing, platform, SaaS, crypto plugin, bot or automation — message me on GitHub and we’ll unpack the job.",
     },
     ru: {
       "meta.title": "Kriva Portfolio",
@@ -877,14 +850,7 @@
       "about.phone.alt": "iPhone с платежом +$10 000 от SotaAds LLC",
       "contact.kicker": "Давайте обсудим",
       "contact.title": "Соберём следующий продукт",
-      "contact.lede": "Лендинг, платформа, SaaS, крипто-плагин, бот или автоматизация — напишите, разберём задачу. Отвечаю через GitHub.",
-      "contact.name": "Имя",
-      "contact.contact": "Telegram или email",
-      "contact.message": "Коротко о задаче",
-      "contact.send": "Отправить",
-      "contact.note": "На сервере ничего не хранится — текст копируется, дальше переписка продолжается в GitHub.",
-      "contact.copied": "Скопировано. Напишите Kriva в GitHub — ссылка слева.",
-      "contact.mailbody": "Привет, Kriva. Это {name}. Контакт: {contact}. {message}",
+      "contact.lede": "Лендинг, платформа, SaaS, крипто-плагин, бот или автоматизация — напишите мне в GitHub, разберём задачу.",
     },
   };
 
