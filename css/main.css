@@ -1340,7 +1340,8 @@ html[data-theme="dark"] .owner-map::after {
 }
 
 .case-stack {
-  overflow: hidden;
+  display: grid;
+  gap: 16px;
 }
 
 .case-item {
@@ -1349,15 +1350,8 @@ html[data-theme="dark"] .owner-map::after {
 }
 
 .case-card {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  border-radius: 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.case-item:last-child .case-card {
-  border-bottom: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .case-face {
