@@ -3326,10 +3326,32 @@ html[data-theme="dark"] {
     font-size: 36px;
   }
 
+  html[lang="ru"] .hero-title {
+    font-size: 30px;
+    letter-spacing: -0.04em;
+  }
+
+  .cycle {
+    display: inline-grid;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    white-space: normal;
+  }
+
   .cycle,
   .cycle span {
-    white-space: nowrap;
-    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.08;
+  }
+
+  .hero-title .line:has(.cycle) {
+    min-height: 2.35em;
+  }
+
+  .case-look {
+    white-space: normal;
   }
 
   .proof-grid {

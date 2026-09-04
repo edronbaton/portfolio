@@ -110,18 +110,39 @@
   }
 
   const cycle = document.querySelector(".cycle");
+  const fitCycle = () => {
+    if (!cycle) return;
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      cycle.style.width = "";
+      return;
+    }
+    const active = cycle.querySelector(".is-on") || cycle.children[0];
+    if (!active) return;
+    const clone = active.cloneNode(true);
+    clone.style.cssText =
+      "position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;pointer-events:none";
+    clone.className = active.className;
+    document.body.appendChild(clone);
+    const width = Math.ceil(clone.getBoundingClientRect().width);
+    clone.remove();
+    if (width > 0) cycle.style.width = `${width}px`;
+  };
   if (cycle) {
     const words = [...cycle.children];
     let index = 0;
     const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     words.forEach((word, i) => word.classList.toggle("is-on", i === 0));
+    fitCycle();
+    window.addEventListener("resize", fitCycle);
     if (!prefersReduce && words.length > 1) {
       window.setInterval(() => {
         words[index].classList.remove("is-on");
         index = (index + 1) % words.length;
         words[index].classList.add("is-on");
+        fitCycle();
       }, 2400);
     }
+    window.__krivaFitCycle = fitCycle;
   }
 
   const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -722,28 +743,28 @@
       "nav.about": "Обо мне",
       "hero.kicker": "AI Product Builder · Product Engineer",
       "hero.line1": "Я создаю",
-      "hero.cycle.0": "продукты под ключ",
-      "hero.cycle.1": "AI-нативные продукты",
+      "hero.cycle.0": "продукты",
+      "hero.cycle.1": "AI-продукты",
       "hero.cycle.2": "SaaS и платформы",
       "hero.cycle.3": "Telegram-ботов",
-      "hero.cycle.4": "платёжные системы",
+      "hero.cycle.4": "платежи",
       "hero.cycle.5": "автоматизацию",
       "hero.sub": "От идеи до живого продукта — продуктовое мышление, инженерия и AI в одном цикле.",
-      "hero.cta": "Посмотреть кейсы",
+      "hero.cta": "Кейсы",
       "hero.card.role": "AI Product Builder",
       "hero.card.speech": "AI Product Builder и Product Engineer. Веду продукт от нуля до запуска — продукт, инженерия, AI и шип.",
       "hero.map.country": "Швеция",
       "traffic.kicker": "Живой охват",
-      "traffic.label": "реальных пользователей в месяц",
+      "traffic.label": "юзеров / мес",
       "traffic.note": "Трафик по живым продуктам — люди, которые реально открывают и пользуются ими каждый месяц.",
       "proof.years": "лет коммерческой работы",
-      "proof.users": "реальных пользователей в месяц",
+      "proof.users": "юзеров / мес",
       "proof.products": "запущенных продуктов и кейсов",
       "proof.web": "лендинги, SaaS и платформы",
       "case.n01": "Кейс 01",
       "case.n02": "Кейс 02",
       "case.n03": "Кейс 03",
-      "case.look": "Смотреть внутри",
+      "case.look": "Внутри",
       "case.less": "Свернуть",
       "adsota.sub": "Рекламная сеть Telegram",
       "adsota.lede": "Запускайте Telegram-кампании, выбирайте аудиторию и формат, смотрите живую аналитику — тот же кабинет, которым пользуются рекламодатели.",
@@ -881,6 +902,7 @@
       const btn = document.querySelector("[data-lang-toggle]");
       if (btn) btn.textContent = l === "ru" ? "RU" : "EN";
       if (typeof window.__krivaPaintGhMonths === "function") window.__krivaPaintGhMonths();
+      if (typeof window.__krivaFitCycle === "function") window.__krivaFitCycle();
     };
 
     apply(lang);
